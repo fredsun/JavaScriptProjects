@@ -5,4 +5,5 @@ function sayHello(content) {
 }
 var hello = '前端开发尝试';
 var users = [1, 2, 3, 4, 5];
-document.body.innerHTML = sayHello(hello);
+// window.document.body.innerHTML = sayHello(hello);
+
