@@ -1,0 +1,72 @@
+<!-- 设置文档声明h5 -->
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <!-- 设置u8编码，切记保存时亦设置u8保存，防止gbk乱码 -->
+    <meta charset="utf-8">
+    <!-- 引入leaflet css样式文件 -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+        integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <!-- 引入leaflet js文件 -->
+    <!-- <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
+         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
+         crossorigin=""> -->
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+    <script>
+        function init() {
+            // 设置中心点和缩放级别，默认启用所有鼠标和交互
+            var map = L.map('map').setView([51.505, -0.09], 13);
+
+            //添加瓦片对象
+            L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+                maxZoom: 18,
+                attribution: 'Map data &copy; ' +
+                    '<a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                    'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+                id: 'examples.map-i875mjb7'
+            }).addTo(map);
+
+            //添加标注
+            L.marker([51.5, -0.09]).addTo(map)
+                .bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
+
+            L.circle([51.508, -0.11], 500, {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5
+            }).addTo(map).bindPopup("I am a circle.");
+
+            L.polygon([
+                [51.509, -0.08],
+                [51.503, -0.06],
+                [51.51, -0.047]
+            ]).addTo(map).bindPopup("I am a polygon.");
+
+
+            var popup = L.popup();
+
+            function onMapClick(e) {
+                popup
+                    .setLatLng(e.latlng)
+                    .setContent("You clicked the map at " + e.latlng.toString())
+                    .openOn(map);
+            }
+
+            map.on('click', onMapClick);
+        }
+    </script>
+
+
+</head>
+
+<body onload="init()">
+    <!-- body中加入地图div -->
+    <div id="map" style="width: 500px; height: 500px;"></div>
+
+</body>
+
+</html>
