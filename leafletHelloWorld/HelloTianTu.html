@@ -1,0 +1,71 @@
+<!-- 设置文档声明h5 -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 设置u8编码，切记保存时亦设置u8保存，防止gbk乱码 -->
+    <meta charset="utf-8">
+    <!-- 导入leaflet样式引用 -->
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+    <!-- 导入leaflet脚本引用 -->
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+    <script src="./utils-value.js"></script>
+    <meta name="viewport" content="width=device -width, inital-scale=1.0,maximum-scale = 1.0, user-scalable = no" />
+    <style type="text/css">
+        html,
+        body,
+        #leaf_map {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+    <script type="text/javascript">
+        // import TianTuKey from "./utils-value.js"
+        // console.log("tia" + Tia);
+        function init() {
+            //加载leaflet地图容器
+            // let map = L.map('leaf_map').setView([30,5217, 114.3948], 18);
+            let map = L.map('leaf_map', {
+                //参考坐标系
+                crs: L.CRS.EPSG3857,
+                //显示中心
+                center: [30.5217, 114.3948],
+                //最小显示等级
+                minZoom: 1,
+                //最大显示等级
+                maxZoom: 18,
+                //当前显示等级
+                zoom: 18,
+                //设置缩放不显示
+                zoomControls: false
+            });
+            //加载leaflet地图矢量图层
+            var vecLayer = L.tileLayer("http://t0.tianditu.gov.cn/DataServer?T=vec_w&x={x}&y={y}&l={z}&tk=" + TianTuKey, { noWrap: true }).addTo(map);
+
+            //添加天地图矢量注记图层
+            var cvsLayer = L.tileLayer("http://t0.tianditu.gov.cn/DataServer?T=cva_w&x={x}&y={y}&l={z}&tk=" + TianTuKey, { noWrap: true }).addTo(map);
+            //添加标注
+            L.marker([30.5217, 114.3948]).addTo(map).bindPopup('您好!').openPopup();
+            map.locate({ setView: true, maxZoom: 18 });
+            map.on("locationfound", function (e) {
+                var radius = e.accuracy / 2;
+                L.marker(e.latlng).addTo(map).bindPopup("你就在这个圈内");
+                L.circle(e.latlng, radius).addTo(map);
+            });
+            //注册定位事件失败
+            map.on("locationerror", function (e) {
+                console.log("定位出错====", e);
+            })
+
+
+        }
+    </script>
+</head>
+
+<body onload="init()">
+    <div id="leaf_map" style="width:100%; height:100%;">
+
+    </div>
+</body>
+
+</html>
